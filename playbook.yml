@@ -1,0 +1,9 @@
+---
+
+- name: Ansible Playbook for configuring HomeBridge
+
+  hosts: webservers
+  roles:
+    - pi
+  remote_user: pi
+  sudo: yes

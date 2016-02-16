@@ -1,0 +1,19 @@
+---
+- name: 'Update APT package cache'
+  action: apt update_cache=yes
+
+- name: 'Upgrade APT to the lastest packages'
+  action: apt upgrade=safe
+
+- name: 'Download V4.0.0 nodejs'
+  get_url: url=https://nodejs.org/dist/v4.0.0/node-v4.0.0-linux-armv7l.tar.gz dest=/tmp/node-v4.0.0-linux-armv7l.tar.gz mode=0600
+
+- name: 'Extract nodejs tar to /usr/local/'
+  unarchive: src=/tmp/node-v4.0.0-linux-armv7l.tar.gz  dest=/usr/local/  copy=no
+
+- name: 'Install Avahi'
+  action: apt name=libavahi-compat-libdnssd-dev
+
+#- name: 'Reboot'
+#  command: /sbin/reboot -t now
+
