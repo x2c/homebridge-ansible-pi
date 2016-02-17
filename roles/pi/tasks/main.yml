@@ -5,14 +5,44 @@
 - name: 'Upgrade APT to the lastest packages'
   action: apt upgrade=safe
 
-- name: 'Download V4.0.0 nodejs'
-  get_url: url=https://nodejs.org/dist/v4.0.0/node-v4.0.0-linux-armv7l.tar.gz dest=/tmp/node-v4.0.0-linux-armv7l.tar.gz mode=0600
-
-- name: 'Extract nodejs tar to /usr/local/'
-  unarchive: src=/tmp/node-v4.0.0-linux-armv7l.tar.gz  dest=/usr/local/  copy=no
-
 - name: 'Install Avahi'
   action: apt name=libavahi-compat-libdnssd-dev
+
+- name: 'Remove legacy nodejs'
+  apt: name=nodejs-legacy state=absent
+
+- name: 'Download latest nodejs'
+  get_url: url=http://node-arm.herokuapp.com/node_latest_armhf.deb dest=/tmp/node_latest_armhf.deb mode=0600
+
+- name: 'Install lastest node'
+  apt: deb=/tmp/node_latest_armhf.deb state=present
+
+- name: 'Install HomeBridge via npm'
+  npm: name=homebridge global=yes
+
+- name: 'Install Nest Homebridge via npm'
+  npm: name=homebridge-nest global=yes
+
+- name: 'Copy Homebridge default config ~/.homebridge'
+  copy: src='includes/.homebridge/config.json' dest='/home/pi/.homebridge/'
+
+- name: 'Copy Homebridge default config ~/.homebridge'
+  copy: src='includes/.homebridge/config.json' dest='/home/pi/.homebridge/'
+
+- name: 'Copy Homebridge init script to /etc/init.d'
+  copy: src='includes/etc/init.d/homebridge' dest='/etc/init.d/' mode=0755
+
+- name: 'Set homebridge to init on boot'
+  command: update-rc.d homebridge defaults
+
+#- name: 'Extract nodejs tar to /tmp'
+#  unarchive: src=/tmp/node-v4.0.0-linux-armv7l.tar.gz  dest=/tmp/  copy=no
+
+#- name: 'Copy nodejs to /usr/local/'
+#  copy: src='/tmp/node-v4.0.0-linux-armv7l/' dest='/usr/local' remote_src=yes
+
+#- name: 'Install Avahi'
+#  action: apt name=libavahi-compat-libdnssd-dev
 
 #- name: 'Reboot'
 #  command: /sbin/reboot -t now
