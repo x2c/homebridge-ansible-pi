@@ -1,12 +1,50 @@
 ---
-- name: 'Update APT package cache'
-  action: apt update_cache=yes
+#- name: 'Update APT package cache'
+#  action: apt update_cache=yes
 
-- name: 'Upgrade APT to the lastest packages'
-  action: apt upgrade=safe
+#- name: 'Upgrade APT to the lastest packages'
+#  action: apt upgrade=safe
 
-- name: 'Install Avahi'
-  action: apt name=libavahi-compat-libdnssd-dev
+#- name: 'Install Apt packages'
+#  apt: name={{item}} state=installed
+#  with_items:
+ #      - libavahi-compat-libdnssd-dev
+  #     - cmake
+   #    - liblockdev1-dev
+    #   - libudev-dev
+     #  - libxrandr-dev
+      # - python-dev
+       #- swig
+
+- name: 'Git clone LibCEC Platform'
+  git: repo=git://github.com/Pulse-Eight/platform.git dest=/tmp/platform accept_hostkey=yes
+
+- name: 'Git clone LibCEC library'
+  git: repo=git://github.com/Pulse-Eight/libcec.git dest=/tmp/libcec accept_hostkey=yes
+
+- name: 'Git clone NodeCEC'
+  git: repo=git://github.com/adammw/node-cec.git dest=/tmp/node-cec accept_hostkey=yes version=transmit
+
+- name: 'Make build directories for LibCEC'
+  command: "{{item}}"
+  with_items:
+       - mkdir -p /tmp/platform/build
+       - mkdir -p /tmp/libcec/build
+
+- name: 'Make Install Platform library'
+  command: "{{item}} chdir=/tmp/platform/build"
+  with_items:
+       - cmake ..
+       - make
+       - make install
+
+- name: 'Make Install LibCEC library'
+  command: "{{item}} chdir=/tmp/libcec/build"
+  with_items:
+       - cmake -DRPI_INCLUDE_DIR=/opt/vc/include -DRPI_LIB_DIR=/opt/vc/lib ..
+       - make -j4
+       - make install 
+       - ldconfig
 
 - name: 'Remove legacy nodejs'
   apt: name=nodejs-legacy state=absent
@@ -20,8 +58,21 @@
 - name: 'Install HomeBridge via npm'
   npm: name=homebridge global=yes
 
-- name: 'Install Nest Homebridge via npm'
-  npm: name=homebridge-nest global=yes
+- name: 'Install Homebridge plugins'
+  npm: name={{item}} global=yes
+  with_items:
+       - homebridge-nest
+       - homebridge-cec
+       - homebridge-samsungtv
+       - homebridge-sonos
+       - homebridge-soundtouch
+       - homebridge-wemo
+       - homebridge-wakeonlan
+       - homebridge-ssh
+       - homebridge-ifttt
+       - homebridge-smartthings
+       - homebridge-myq
+       - homebridge-lockitron
 
 - name: 'Copy Homebridge default config ~/.homebridge'
   copy: src='includes/.homebridge/config.json' dest='/home/pi/.homebridge/'
@@ -34,15 +85,6 @@
 
 - name: 'Set homebridge to init on boot'
   command: update-rc.d homebridge defaults
-
-#- name: 'Extract nodejs tar to /tmp'
-#  unarchive: src=/tmp/node-v4.0.0-linux-armv7l.tar.gz  dest=/tmp/  copy=no
-
-#- name: 'Copy nodejs to /usr/local/'
-#  copy: src='/tmp/node-v4.0.0-linux-armv7l/' dest='/usr/local' remote_src=yes
-
-#- name: 'Install Avahi'
-#  action: apt name=libavahi-compat-libdnssd-dev
 
 #- name: 'Reboot'
 #  command: /sbin/reboot -t now
