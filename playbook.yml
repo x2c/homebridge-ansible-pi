@@ -2,7 +2,7 @@
 
 - name: Ansible Playbook for configuring HomeBridge
 
-  hosts: webservers
+  hosts: raspberrypi
   roles:
     - pi
   remote_user: pi

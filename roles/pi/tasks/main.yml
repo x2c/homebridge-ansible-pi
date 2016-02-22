@@ -1,29 +1,26 @@
 ---
-#- name: 'Update APT package cache'
-#  action: apt update_cache=yes
+- name: 'Update APT package cache'
+  action: apt update_cache=yes
 
-#- name: 'Upgrade APT to the lastest packages'
-#  action: apt upgrade=safe
+- name: 'Upgrade APT to the lastest packages'
+  action: apt upgrade=safe
 
-#- name: 'Install Apt packages'
-#  apt: name={{item}} state=installed
-#  with_items:
- #      - libavahi-compat-libdnssd-dev
-  #     - cmake
-   #    - liblockdev1-dev
-    #   - libudev-dev
-     #  - libxrandr-dev
-      # - python-dev
-       #- swig
+- name: 'Install Apt packages'
+  apt: name={{item}} state=installed
+  with_items:
+       - libavahi-compat-libdnssd-dev
+       - cmake
+       - liblockdev1-dev
+       - libudev-dev
+       - libxrandr-dev
+       - python-dev
+       - swig
 
 - name: 'Git clone LibCEC Platform'
   git: repo=git://github.com/Pulse-Eight/platform.git dest=/tmp/platform accept_hostkey=yes
 
 - name: 'Git clone LibCEC library'
   git: repo=git://github.com/Pulse-Eight/libcec.git dest=/tmp/libcec accept_hostkey=yes
-
-- name: 'Git clone NodeCEC'
-  git: repo=git://github.com/adammw/node-cec.git dest=/tmp/node-cec accept_hostkey=yes version=transmit
 
 - name: 'Make build directories for LibCEC'
   command: "{{item}}"
@@ -62,16 +59,10 @@
   npm: name={{item}} global=yes
   with_items:
        - homebridge-nest
-       - homebridge-cec
-       - homebridge-samsungtv
        - homebridge-sonos
        - homebridge-soundtouch
        - homebridge-wemo
-       - homebridge-wakeonlan
-       - homebridge-ssh
-       - homebridge-ifttt
        - homebridge-smartthings
-       - homebridge-myq
        - homebridge-lockitron
 
 - name: 'Copy Homebridge default config ~/.homebridge'
@@ -86,6 +77,15 @@
 - name: 'Set homebridge to init on boot'
   command: update-rc.d homebridge defaults
 
-#- name: 'Reboot'
-#  command: /sbin/reboot -t now
+- name: 'Enable hdmi_force_hotplug'
+  replace:
+    dest=/boot/config.txt
+    regexp='#hdmi_force_hotplug=1'
+    replace='hdmi_force_hotplug=1'
+    backup=no
 
+- name: 'Disable HDMI CEC switch to PI on boot'
+  lineinfile: 
+    dest=/boot/config.txt
+    line="hdmi_ignore_cec_init=1"
+    state=present
