@@ -45,4 +45,13 @@ nano hosts (modify ip address to point at your raspberry pi)
 SSH password: (default password raspberry)
 ```
 
+##Configure Homebridge on iOS iPhone/iPad
+Currently there are no official apps for adding HomeBridge devices to Apple's HomeKit.
+A number of third party apps are available which will enable you to add your new HomeBridge devices to Siri:
 
+* [Insteon+](https://itunes.apple.com/US/app/id919270334?mt=8 "Insteon+ HomeKit App") Price : Free
+* [Lutron](https://itunes.apple.com/us/app/lutron-app-for-caseta-wireless/id886753021?mt=8 "Lutron HomeKit App") Price : Free
+* [MyTouchHome](https://itunes.apple.com/us/app/mytouchhome/id965142360?mt=8&at=11lvmd&ct=mhweb "MyTouchHome HomeKit App") Price : $1.99
+* [Devices](https://itunes.apple.com/us/app/devices/id966877433?mt=8 "Devices HomeKit App") Price : $2.99
+
+Adding HomeBridge devices to Homekit the default code is **031-45-154**
