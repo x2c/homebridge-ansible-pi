@@ -31,9 +31,18 @@ Homebridge enables IOT devices to be added and controlled by Siri that would nor
   
 ```bash
 git clone https://github.com/x2c/homebridge-ansible-pi.git
+```
+```bash
 cd homebridge-ansible-pi
+```
+```bash
 nano hosts (modify ip address to point at your raspberry pi)
+```
+```bash
 ./run-ansible.sh
+```
+```bash
 SSH password: (default password raspberry)
+```
 
-``` 
+
