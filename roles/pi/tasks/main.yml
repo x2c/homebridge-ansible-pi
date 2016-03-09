@@ -15,6 +15,7 @@
        - libxrandr-dev
        - python-dev
        - swig
+       - git
 
 - name: 'Git clone LibCEC Platform'
   git: repo=git://github.com/Pulse-Eight/platform.git dest=/tmp/platform accept_hostkey=yes
@@ -52,18 +53,10 @@
 - name: 'Install lastest node'
   apt: deb=/tmp/node_latest_armhf.deb state=present
 
-- name: 'Install HomeBridge via npm'
-  npm: name=homebridge global=yes
-
-- name: 'Install Homebridge plugins'
+- name: 'Install Homebridge + Plugins'
   npm: name={{item}} global=yes
   with_items:
-       - homebridge-nest
-       - homebridge-sonos
-       - homebridge-soundtouch
-       - homebridge-wemo
-       - homebridge-smartthings
-       - homebridge-lockitron
+       - homebridge
 
 - name: 'Copy Homebridge default config ~/.homebridge'
   copy: src='includes/.homebridge/config.json' dest='/home/pi/.homebridge/'

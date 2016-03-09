@@ -5,12 +5,19 @@
         "port": 51826,
         "pin": "031-45-154"
     },
-    
+
     "description": "Default Homebridge configuration",
 
     "accessories": [
-
-    ],
+      {
+       "accessory": "TV",
+       "name": "TV"
+      },
+      {
+       "accessory": "AMP",
+       "name": "Amplifier"
+      }
+     ],
 
     "platforms": [
 
