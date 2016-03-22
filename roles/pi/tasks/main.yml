@@ -57,6 +57,7 @@
   npm: name={{item}} global=yes
   with_items:
        - homebridge
+       - homebridge-hdmi
 
 - name: 'Copy Homebridge default config ~/.homebridge'
   copy: src='includes/.homebridge/config.json' dest='/home/pi/.homebridge/'
