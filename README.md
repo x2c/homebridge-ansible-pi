@@ -17,7 +17,7 @@ Homebridge enables IOT devices to be added and controlled by Siri that would nor
 * SoundTouch
 * Wemo
 
-
+[HomeBridge-hdmi](https://github.com/x2c/homebridge-hdmi "HomeBridge HDMI") is now automatically installed and configured as part of the set-up process. This enables you to plug your Raspberry Pi directly into your HDMI TV or AV Amp and issue comannds like "Hey Siri, turn the TV on"
 
 ##Requirements
 
